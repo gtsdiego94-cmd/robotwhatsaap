@@ -10,11 +10,29 @@ const funcionarios = [
   "Eduardo Lima",
   "João Paulo",
   "Kauan Geraldo",
-  "Erick",
+  "Erick da Conceição",
   "Victor Costa"
 ];
 
-const postos = ["G6", "G8", "G5", "G10", "G11", "G12", "G13", "G2", "G1", "R1", "R2", "F"];
+const folgasPorFuncionario = {
+  "Lucas Trindade": 8,
+  "Matheus Senhorinho": 7,
+  "Wilson Ramos": 8,
+  "Ricardo Lima": 7,
+  "Danilo Pereira": 8,
+  "Kauan Santos": 8,
+  "Dalton": 9,
+  "Pedro": 8,
+  "Eduardo Lima": 9,
+  "João Paulo": 9,
+  "Kauan Geraldo": 7,
+  "Erick da Conceição": 8,
+  "Victor Costa": 7
+};
+
+const postosTrabalho = [
+  "G6", "G8", "G5", "G10", "G11", "G12", "G13", "G2", "G1", "R1", "R2"
+];
 
 const diasDoMes = 31;
 let escala = {};
@@ -22,16 +40,45 @@ let escala = {};
 function gerarEscala() {
   for (let dia = 1; dia <= diasDoMes; dia++) {
     escala[dia] = {};
+  }
 
-    funcionarios.forEach((nome, index) => {
-      const posicao = (index + dia - 1) % postos.length;
-      escala[dia][nome] = postos[posicao];
+  funcionarios.forEach((nome, index) => {
+    let totalFolgas = folgasPorFuncionario[nome];
+    let intervalo = Math.floor(diasDoMes / totalFolgas);
+    let contadorFolgas = 0;
+
+    for (let dia = 1; dia <= diasDoMes; dia++) {
+      let deveFolgar = ((dia + index) % intervalo === 0) && contadorFolgas < totalFolgas;
+
+      if (deveFolgar) {
+        escala[dia][nome] = "F";
+        contadorFolgas++;
+      }
+    }
+
+    let diaExtra = 1;
+    while (contadorFolgas < totalFolgas) {
+      if (!escala[diaExtra][nome]) {
+        escala[diaExtra][nome] = "F";
+        contadorFolgas++;
+      }
+      diaExtra++;
+    }
+  });
+
+  for (let dia = 1; dia <= diasDoMes; dia++) {
+    let funcionariosTrabalhando = funcionarios.filter(nome => escala[dia][nome] !== "F");
+
+    funcionariosTrabalhando.forEach((nome, index) => {
+      const posto = postosTrabalho[index % postosTrabalho.length];
+      escala[dia][nome] = posto;
     });
   }
 }
 
 function criarBotoesDias() {
   const diasDiv = document.getElementById("dias");
+  diasDiv.innerHTML = "";
 
   for (let dia = 1; dia <= diasDoMes; dia++) {
     const botao = document.createElement("button");
@@ -55,22 +102,34 @@ function mostrarDia(dia) {
       </tr>
   `;
 
-  postos.forEach(posto => {
+  postosTrabalho.forEach(posto => {
     const pessoa = funcionarios.find(nome => escala[dia][nome] === posto);
 
     html += `
       <tr>
-        <td class="${classePosto(posto)}">${posto === "F" ? "Folga" : posto}</td>
+        <td class="${classePosto(posto)}">${posto}</td>
         <td>${pessoa || "-"}</td>
       </tr>
     `;
   });
 
-  resultado.innerHTML = html + "</table>";
+  const folgas = funcionarios.filter(nome => escala[dia][nome] === "F");
+
+  html += `
+    <tr>
+      <td class="folga">Folga</td>
+      <td>${folgas.join(", ") || "-"}</td>
+    </tr>
+  `;
+
+  html += "</table>";
+
+  resultado.innerHTML = html;
 }
 
 function preencherFuncionarios() {
   const select = document.getElementById("funcionarioSelect");
+  select.innerHTML = `<option value="">Selecione o funcionário</option>`;
 
   funcionarios.forEach(nome => {
     const option = document.createElement("option");
@@ -103,6 +162,61 @@ function mostrarFuncionario(nome) {
   div.innerHTML = html;
 }
 
+function mostrarResumoFolgas() {
+  const main = document.querySelector("main");
+
+  const resumoAntigo = document.getElementById("resumoFolgas");
+  if (resumoAntigo) resumoAntigo.remove();
+
+  let html = `
+    <section class="card" id="resumoFolgas">
+      <h2>Resumo do mês</h2>
+      <table>
+        <tr>
+          <th>Funcionário</th>
+          <th>Trabalhados</th>
+          <th>Folgas</th>
+        </tr>
+  `;
+
+  let totalTrabalhados = 0;
+  let totalFolgas = 0;
+
+  funcionarios.forEach(nome => {
+    let folgas = 0;
+    let trabalhados = 0;
+
+    for (let dia = 1; dia <= diasDoMes; dia++) {
+      if (escala[dia][nome] === "F") {
+        folgas++;
+      } else {
+        trabalhados++;
+      }
+    }
+
+    totalTrabalhados += trabalhados;
+    totalFolgas += folgas;
+
+    html += `
+      <tr>
+        <td>${nome}</td>
+        <td>${trabalhados}</td>
+        <td class="folga">${folgas}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+      </table>
+      <br>
+      <p><strong>Total de dias trabalhados:</strong> ${totalTrabalhados}</p>
+      <p><strong>Total de folgas:</strong> ${totalFolgas}</p>
+    </section>
+  `;
+
+  main.insertAdjacentHTML("beforeend", html);
+}
+
 function classePosto(posto) {
   if (posto === "F") return "folga";
   if (posto === "R1" || posto === "R2") return "rendicao";
@@ -113,3 +227,4 @@ gerarEscala();
 criarBotoesDias();
 preencherFuncionarios();
 mostrarDia(1);
+mostrarResumoFolgas();
