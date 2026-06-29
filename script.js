@@ -178,7 +178,13 @@ function mostrarDia(dia) {
     html += `
       <tr>
         <td class="${classePosto(posto)}">${posto}</td>
-        <td>${escala[dia][posto] || "SEM COBERTURA"}</td>
+        <td>
+  ${
+    escala[dia][posto] === "SEM COBERTURA"
+      ? `<span class="folga">FECHADA / SEM COBERTURA</span>`
+      : escala[dia][posto]
+  }
+</td>
       </tr>
     `;
   });
