@@ -166,37 +166,41 @@ function mostrarDia(dia) {
 
   titulo.textContent = `Escala do dia ${String(dia).padStart(2, "0")}/07/2026`;
 
-  let html = `
-    <table>
-      <tr>
-        <th>Posto</th>
-        <th>Funcionário</th>
-      </tr>
-  `;
+  const grupos = {
+    "🔥 Máquinas fortes": ["G6", "G8", "G5"],
+    "🟢 Rendição": ["R1", "R2"],
+    "🔵 Máquinas principais": ["G10", "G11", "G1"],
+    "🟡 Máquinas extras": ["G13", "G2", "G12"]
+  };
 
-  postos.forEach(posto => {
-    html += `
-      <tr>
-        <td class="${classePosto(posto)}">${posto}</td>
-        <td>
-  ${
-    escala[dia][posto] === "SEM COBERTURA"
-      ? `<span class="folga">FECHADA / SEM COBERTURA</span>`
-      : escala[dia][posto]
-  }
-</td>
-      </tr>
-    `;
+  let html = `<div class="painel-dia">`;
+
+  Object.keys(grupos).forEach(tituloGrupo => {
+    html += `<h3>${tituloGrupo}</h3><div class="cards-grid">`;
+
+    grupos[tituloGrupo].forEach(posto => {
+      const pessoa = escala[dia][posto] || "SEM COBERTURA";
+      const fechada = pessoa === "SEM COBERTURA" || pessoa === "Fechada";
+
+      html += `
+        <div class="posto-card ${classePosto(posto)} ${fechada ? "fechada" : ""}">
+          <div class="posto-nome">${posto}</div>
+          <div class="posto-pessoa">${fechada ? "FECHADA / SEM COBERTURA" : pessoa}</div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
   });
 
   html += `
-    <tr>
-      <td class="folga">Folga</td>
-      <td>${escala[dia].folgas.join(", ") || "-"}</td>
-    </tr>
+    <h3>🏖️ Folgas</h3>
+    <div class="folgas-box">
+      ${escala[dia].folgas.length ? escala[dia].folgas.map(nome => `<span>${nome}</span>`).join("") : "<span>Ninguém de folga</span>"}
+    </div>
   `;
 
-  html += "</table>";
+  html += `</div>`;
   resultado.innerHTML = html;
 }
 
