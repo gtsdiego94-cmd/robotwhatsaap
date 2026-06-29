@@ -14,13 +14,11 @@ const funcionarios = [
   "Vitor Costa"
 ];
 
-const postosNormais = ["G6", "G8", "G5", "R1", "R2", "G10", "G2", "G1", "G13", "G11", "G12"];
+const postosNormais = ["G6", "G8", "G5", "G2", "G1", "R1", "R2", "G10", "G11", "G13", "G12"];
 
-const postosTAAG = ["G6", "G8", "G5", "G2", "R1", "R2", "G10", "G11", "G1", "G13", "G12"];
+const postosTAAG = ["G6", "G8", "G5", "G2", "G1", "R1", "R2", "G10", "G11", "G13", "G12"];
 
-const postos = postosNormais;
-
-const fortes = ["G6", "G8", "G2"];
+const fortes = ["G6", "G8", "G5", "G2", "G1"];
 const folgasPorDia = {
   1: ["Eduardo Lima", "Dalton", "Wilson Ramos"],
   2: ["Khauan Santos", "João Paulo"],
