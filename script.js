@@ -14,11 +14,9 @@ const funcionarios = [
   "Vitor Costa"
 ];
 
-const postosNormais = ["G6", "G8", "G5", "G2", "G1", "R1", "R2", "G10", "G11", "G13", "G12"];
-
-const postosTAAG = ["G6", "G8", "G5", "G2", "G1", "R1", "R2", "G10", "G11", "G13", "G12"];
-
+const postos = ["G6", "G8", "G5", "G2", "G1", "R1", "R2", "G10", "G11", "G13", "G12"];
 const fortes = ["G6", "G8", "G5", "G2", "G1"];
+
 const folgasPorDia = {
   1: ["Eduardo Lima", "Dalton", "Wilson Ramos"],
   2: ["Khauan Santos", "João Paulo"],
@@ -58,32 +56,18 @@ const escalaManual = {
     G6: "Lucas Trindade",
     G8: "Matheus Senhorinho",
     G5: "Ricardo Lima",
+    G2: "Vitor Costa",
+    G1: "Eric da Conceição",
     R1: "Danilo Pereira dos Santos",
     R2: "Khauan Santos",
     G10: "Pedro",
     G11: "João Paulo",
-    G12: "Kauã Geraldo dos Santos",
     G13: "Fechada",
-    G2: "Vitor Costa",
-    G1: "Eric da Conceição"
+    G12: "Kauã Geraldo dos Santos"
   }
 };
 
 let escala = {};
-function ehDiaTAAG(dia) {
-  const data = new Date(2026, 6, dia);
-  const semana = data.getDay();
-
-  return semana === 0 || semana === 1 || semana === 3 || semana === 5;
-}
-
-function postosDoDia(dia) {
-  return ehDiaTAAG(dia) ? postosTAAG : postosNormais;
-}
-
-function fortesDoDia(dia) {
-  return ehDiaTAAG(dia) ? ["G6", "G8", "G5", "G2"] : ["G6", "G8", "G5"];
-}
 let contagem = {};
 
 function iniciarContagem() {
@@ -122,9 +106,7 @@ function gerarEscala() {
       contagem[escolhido][posto]++;
       contagem[escolhido].total++;
 
-      if (fortes.includes(posto)) {
-        contagem[escolhido].fortes++;
-      }
+      if (fortes.includes(posto)) contagem[escolhido].fortes++;
 
       disponiveis = disponiveis.filter(nome => nome !== escolhido);
     });
@@ -156,10 +138,7 @@ function registrarContagem(dia) {
     if (funcionarios.includes(nome)) {
       contagem[nome][posto]++;
       contagem[nome].total++;
-
-      if (fortes.includes(posto)) {
-        contagem[nome].fortes++;
-      }
+      if (fortes.includes(posto)) contagem[nome].fortes++;
     }
   });
 }
@@ -183,10 +162,9 @@ function mostrarDia(dia) {
   titulo.textContent = `Escala do dia ${String(dia).padStart(2, "0")}/07/2026`;
 
   const grupos = {
-    "🔥 Máquinas fortes": ["G6", "G8", "G5"],
-    "🟢 Rendição": ["R1", "R2"],
-    "🔵 Máquinas principais": ["G10", "G11", "G1"],
-    "🟡 Máquinas extras": ["G13", "G2", "G12"]
+    "🔥 Prioridade mínima": ["G6", "G8", "G5", "G2", "G1", "R1"],
+    "🟢 Segunda rendição": ["R2"],
+    "🔵 Máquinas extras": ["G10", "G11", "G13", "G12"]
   };
 
   let html = `<div class="painel-dia">`;
@@ -212,7 +190,11 @@ function mostrarDia(dia) {
   html += `
     <h3>🏖️ Folgas</h3>
     <div class="folgas-box">
-      ${escala[dia].folgas.length ? escala[dia].folgas.map(nome => `<span>${nome}</span>`).join("") : "<span>Ninguém de folga</span>"}
+      ${
+        escala[dia].folgas.length
+          ? escala[dia].folgas.map(nome => `<span>${nome}</span>`).join("")
+          : "<span>Ninguém de folga</span>"
+      }
     </div>
   `;
 
@@ -309,7 +291,7 @@ function mostrarResumoMaquinas() {
     html += `<th>${posto}</th>`;
   });
 
-  html += `<th>Fortes</th></tr>`;
+  html += `<th>Prioridade</th></tr>`;
 
   funcionarios.forEach(nome => {
     html += `<tr><td>${nome}</td>`;
@@ -325,6 +307,7 @@ function mostrarResumoMaquinas() {
     });
 
     let totalFortes = 0;
+
     for (let dia = 1; dia <= 31; dia++) {
       fortes.forEach(posto => {
         if (escala[dia][posto] === nome) totalFortes++;
@@ -341,7 +324,7 @@ function mostrarResumoMaquinas() {
 function classePosto(posto) {
   if (posto === "Folga" || posto === "F") return "folga";
   if (posto === "R1" || posto === "R2") return "rendicao";
-  if (posto === "G6" || posto === "G8" || posto === "G5") return "forte";
+  if (["G6", "G8", "G5", "G2", "G1"].includes(posto)) return "forte";
   return "maquina";
 }
 
