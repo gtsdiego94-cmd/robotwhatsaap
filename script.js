@@ -14,9 +14,13 @@ const funcionarios = [
   "Vitor Costa"
 ];
 
-const postos = ["G6", "G8", "G5", "R1", "R2", "G10", "G11", "G1", "G13", "G2", "G12"];
-const fortes = ["G6", "G8", "G5"];
+const postosNormais = ["G6", "G8", "G5", "R1", "R2", "G10", "G11", "G1", "G13", "G2", "G12"];
 
+const postosTAAG = ["G6", "G8", "G5", "G2", "R1", "R2", "G10", "G11", "G1", "G13", "G12"];
+
+const postos = postosNormais;
+
+const fortes = ["G6", "G8", "G5"];
 const folgasPorDia = {
   1: ["Eduardo Lima", "Dalton", "Wilson Ramos"],
   2: ["Khauan Santos", "João Paulo"],
@@ -68,6 +72,20 @@ const escalaManual = {
 };
 
 let escala = {};
+function ehDiaTAAG(dia) {
+  const data = new Date(2026, 6, dia);
+  const semana = data.getDay();
+
+  return semana === 0 || semana === 1 || semana === 3 || semana === 5;
+}
+
+function postosDoDia(dia) {
+  return ehDiaTAAG(dia) ? postosTAAG : postosNormais;
+}
+
+function fortesDoDia(dia) {
+  return ehDiaTAAG(dia) ? ["G6", "G8", "G5", "G2"] : ["G6", "G8", "G5"];
+}
 let contagem = {};
 
 function iniciarContagem() {
