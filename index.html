@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escala Turno A</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+  <header>
+    <h1>Escala Turno A</h1>
+    <p>ProtecBag - Julho 2026</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Escolha o dia</h2>
+      <div id="dias" class="dias"></div>
+    </section>
+
+    <section class="card">
+      <h2 id="titulo-dia">Escala do dia</h2>
+      <div id="resultado"></div>
+    </section>
+
+    <section class="card">
+      <h2>Consultar por funcionário</h2>
+      <select id="funcionarioSelect">
+        <option value="">Selecione o funcionário</option>
+      </select>
+      <div id="resultadoFuncionario"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
