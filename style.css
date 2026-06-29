@@ -1,1 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
+body {
+    background: #f5f7fa;
+    color: #333;
+}
+
+header {
+    background: #005baa;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.15);
+}
+
+header h1{
+    font-size: 30px;
+}
+
+header p{
+    margin-top:8px;
+    font-size:18px;
+}
+
+main{
+    max-width:1000px;
+    margin:25px auto;
+    padding:15px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.card h2{
+    margin-bottom:15px;
+    color:#005baa;
+}
+
+.dias{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(55px,1fr));
+    gap:10px;
+}
+
+.dias button{
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#0078d7;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.dias button:hover{
+    background:#005baa;
+    transform:scale(1.05);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+table th{
+    background:#005baa;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+table tr:nth-child(even){
+    background:#f2f2f2;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:16px;
+    margin-bottom:20px;
+}
+
+.funcionario{
+    background:#eef5ff;
+    padding:15px;
+    border-radius:10px;
+    line-height:30px;
+}
+
+.maquina{
+    color:#005baa;
+    font-weight:bold;
+}
+
+.folga{
+    color:red;
+    font-weight:bold;
+}
+
+.rendicao{
+    color:#009933;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    color:#777;
+}
+
+@media(max-width:700px){
+
+header h1{
+    font-size:24px;
+}
+
+header p{
+    font-size:16px;
+}
+
+.card{
+    padding:15px;
+}
+
+.dias button{
+    padding:12px;
+    font-size:14px;
+}
+
+}
