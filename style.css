@@ -213,3 +213,44 @@ header p{
   border-radius: 20px;
   font-weight: bold;
 }
+.card {
+  border-left: 6px solid #1f2937;
+}
+
+.painel-dia {
+  margin-top: 10px;
+}
+
+.posto-card {
+  min-height: 95px;
+}
+
+.posto-nome {
+  letter-spacing: 1px;
+}
+
+.posto-pessoa {
+  color: #222;
+}
+
+.posto-card.fechada .posto-pessoa {
+  color: #b30000;
+}
+
+@media(max-width:700px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .posto-card {
+    padding: 18px;
+  }
+
+  .posto-nome {
+    font-size: 24px;
+  }
+
+  .posto-pessoa {
+    font-size: 17px;
+  }
+}
