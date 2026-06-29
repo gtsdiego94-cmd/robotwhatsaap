@@ -30,11 +30,14 @@ const folgasPorFuncionario = {
   "Victor Costa": 7
 };
 
-const postosTrabalho = [
-  "G6", "G8", "G5", "G10", "G11", "G12", "G13", "G2", "G1", "R1", "R2"
+const diasDoMes = 31;
+
+const postosPrioridade = [
+  "G6", "G8", "G5",
+  "R1", "R2",
+  "G10", "G11", "G12", "G13", "G2", "G1"
 ];
 
-const diasDoMes = 31;
 let escala = {};
 
 function gerarEscala() {
@@ -42,36 +45,44 @@ function gerarEscala() {
     escala[dia] = {};
   }
 
+  distribuirFolgas();
+  distribuirPostos();
+}
+
+function distribuirFolgas() {
   funcionarios.forEach((nome, index) => {
     let totalFolgas = folgasPorFuncionario[nome];
-    let intervalo = Math.floor(diasDoMes / totalFolgas);
-    let contadorFolgas = 0;
+    let folgasMarcadas = 0;
+    let dia = 1 + (index % 4);
 
-    for (let dia = 1; dia <= diasDoMes; dia++) {
-      let deveFolgar = ((dia + index) % intervalo === 0) && contadorFolgas < totalFolgas;
-
-      if (deveFolgar) {
-        escala[dia][nome] = "F";
-        contadorFolgas++;
-      }
+    while (folgasMarcadas < totalFolgas && dia <= diasDoMes) {
+      escala[dia][nome] = "F";
+      folgasMarcadas++;
+      dia += 4;
     }
 
-    let diaExtra = 1;
-    while (contadorFolgas < totalFolgas) {
-      if (!escala[diaExtra][nome]) {
-        escala[diaExtra][nome] = "F";
-        contadorFolgas++;
+    dia = 1;
+
+    while (folgasMarcadas < totalFolgas && dia <= diasDoMes) {
+      if (escala[dia][nome] !== "F") {
+        escala[dia][nome] = "F";
+        folgasMarcadas++;
       }
-      diaExtra++;
+      dia++;
     }
   });
+}
 
+function distribuirPostos() {
   for (let dia = 1; dia <= diasDoMes; dia++) {
-    let funcionariosTrabalhando = funcionarios.filter(nome => escala[dia][nome] !== "F");
+    const trabalhando = funcionarios.filter(nome => escala[dia][nome] !== "F");
 
-    funcionariosTrabalhando.forEach((nome, index) => {
-      const posto = postosTrabalho[index % postosTrabalho.length];
-      escala[dia][nome] = posto;
+    const rotacao = [...trabalhando];
+    const deslocamento = (dia - 1) % rotacao.length;
+    const ordenados = rotacao.slice(deslocamento).concat(rotacao.slice(0, deslocamento));
+
+    ordenados.forEach((nome, index) => {
+      escala[dia][nome] = postosPrioridade[index] || "Apoio";
     });
   }
 }
@@ -102,13 +113,13 @@ function mostrarDia(dia) {
       </tr>
   `;
 
-  postosTrabalho.forEach(posto => {
+  postosPrioridade.forEach(posto => {
     const pessoa = funcionarios.find(nome => escala[dia][nome] === posto);
 
     html += `
       <tr>
         <td class="${classePosto(posto)}">${posto}</td>
-        <td>${pessoa || "-"}</td>
+        <td>${pessoa || "SEM COBERTURA"}</td>
       </tr>
     `;
   });
@@ -123,7 +134,6 @@ function mostrarDia(dia) {
   `;
 
   html += "</table>";
-
   resultado.innerHTML = html;
 }
 
@@ -183,8 +193,8 @@ function mostrarResumoFolgas() {
   let totalFolgas = 0;
 
   funcionarios.forEach(nome => {
-    let folgas = 0;
     let trabalhados = 0;
+    let folgas = 0;
 
     for (let dia = 1; dia <= diasDoMes; dia++) {
       if (escala[dia][nome] === "F") {
@@ -220,6 +230,7 @@ function mostrarResumoFolgas() {
 function classePosto(posto) {
   if (posto === "F") return "folga";
   if (posto === "R1" || posto === "R2") return "rendicao";
+  if (posto === "G6" || posto === "G8" || posto === "G5") return "maquina forte";
   return "maquina";
 }
 
