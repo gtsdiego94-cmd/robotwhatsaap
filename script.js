@@ -77,9 +77,8 @@ function distribuirPostos() {
   for (let dia = 1; dia <= diasDoMes; dia++) {
     const trabalhando = funcionarios.filter(nome => escala[dia][nome] !== "F");
 
-    const rotacao = [...trabalhando];
-    const deslocamento = (dia - 1) % rotacao.length;
-    const ordenados = rotacao.slice(deslocamento).concat(rotacao.slice(0, deslocamento));
+    const deslocamento = (dia - 1) % trabalhando.length;
+    const ordenados = trabalhando.slice(deslocamento).concat(trabalhando.slice(0, deslocamento));
 
     ordenados.forEach((nome, index) => {
       escala[dia][nome] = postosPrioridade[index] || "Apoio";
@@ -227,10 +226,56 @@ function mostrarResumoFolgas() {
   main.insertAdjacentHTML("beforeend", html);
 }
 
+function mostrarResumoMaquinas() {
+  const main = document.querySelector("main");
+
+  const antigo = document.getElementById("resumoMaquinas");
+  if (antigo) antigo.remove();
+
+  let html = `
+    <section class="card" id="resumoMaquinas">
+      <h2>Quantidade por máquina</h2>
+      <table>
+        <tr>
+          <th>Funcionário</th>
+  `;
+
+  postosPrioridade.forEach(posto => {
+    html += `<th>${posto}</th>`;
+  });
+
+  html += `</tr>`;
+
+  funcionarios.forEach(nome => {
+    html += `<tr><td>${nome}</td>`;
+
+    postosPrioridade.forEach(posto => {
+      let quantidade = 0;
+
+      for (let dia = 1; dia <= diasDoMes; dia++) {
+        if (escala[dia][nome] === posto) {
+          quantidade++;
+        }
+      }
+
+      html += `<td>${quantidade}</td>`;
+    });
+
+    html += `</tr>`;
+  });
+
+  html += `
+      </table>
+    </section>
+  `;
+
+  main.insertAdjacentHTML("beforeend", html);
+}
+
 function classePosto(posto) {
   if (posto === "F") return "folga";
   if (posto === "R1" || posto === "R2") return "rendicao";
-  if (posto === "G6" || posto === "G8" || posto === "G5") return "maquina forte";
+  if (posto === "G6" || posto === "G8" || posto === "G5") return "forte";
   return "maquina";
 }
 
@@ -239,3 +284,4 @@ criarBotoesDias();
 preencherFuncionarios();
 mostrarDia(1);
 mostrarResumoFolgas();
+mostrarResumoMaquinas();
