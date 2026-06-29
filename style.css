@@ -155,3 +155,61 @@ header p{
   color: #b30000;
   font-weight: bold;
 }
+.painel-dia h3 {
+  margin: 20px 0 10px;
+  color: #333;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.posto-card {
+  border-radius: 14px;
+  padding: 16px;
+  background: #eef5ff;
+  border-left: 7px solid #0078d7;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.posto-card.forte {
+  background: #fff0f0;
+  border-left-color: #b30000;
+}
+
+.posto-card.rendicao {
+  background: #efffed;
+  border-left-color: #009933;
+}
+
+.posto-card.fechada {
+  background: #eeeeee;
+  border-left-color: #555;
+}
+
+.posto-nome {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.posto-pessoa {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.folgas-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.folgas-box span {
+  background: #ffe6e6;
+  color: #b30000;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+}
