@@ -254,3 +254,25 @@ header p{
     font-size: 17px;
   }
 }
+.dias {
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+}
+
+.dias button {
+  height: 90px;
+  padding: 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.dias button strong {
+  display: block;
+  font-size: 26px;
+  line-height: 28px;
+}
+
+.dias button small {
+  display: block;
+  font-size: 13px;
+  margin-top: 3px;
+}
