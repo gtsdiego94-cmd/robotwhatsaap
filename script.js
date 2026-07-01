@@ -147,9 +147,20 @@ function criarBotoesDias() {
   const diasDiv = document.getElementById("dias");
   diasDiv.innerHTML = "";
 
+  const diasSemana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
   for (let dia = 1; dia <= 31; dia++) {
+    const data = new Date(2026, 6, dia);
+    const nomeSemana = diasSemana[data.getDay()];
+
     const botao = document.createElement("button");
-    botao.textContent = String(dia).padStart(2, "0");
+
+    botao.innerHTML = `
+      <strong>${String(dia).padStart(2, "0")}</strong>
+      <small>${nomeSemana}</small>
+      <small>${String(dia).padStart(2, "0")}/07</small>
+    `;
+
     botao.onclick = () => mostrarDia(dia);
     diasDiv.appendChild(botao);
   }
