@@ -11,7 +11,7 @@ const funcionarios = [
   "João Paulo",
   "Kauã Geraldo dos Santos",
   "Eric da Conceição",
-  "Vitor Costa"
+  "Victor Costa"
 ];
 
 const postos = ["G6", "G8", "G5", "G2", "G1", "R1", "R2", "G10", "G11", "G13", "G12"];
