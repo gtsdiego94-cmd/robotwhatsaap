@@ -69,6 +69,7 @@ const escalaManual = {
 
 let escala = {};
 let contagem = {};
+let diaAtual = 1;
 
 function iniciarContagem() {
   funcionarios.forEach(nome => {
@@ -136,7 +137,7 @@ function registrarContagem(dia) {
     const nome = escala[dia][posto];
 
     if (funcionarios.includes(nome)) {
-      contagem[nome][posto]++;
+      contagem[nome][posto]++;d
       contagem[nome].total++;
       if (fortes.includes(posto)) contagem[nome].fortes++;
     }
@@ -167,6 +168,7 @@ function criarBotoesDias() {
 }
 
 function mostrarDia(dia) {
+  diaAtual = dia;
   const resultado = document.getElementById("resultado");
   const titulo = document.getElementById("titulo-dia");
 
@@ -339,6 +341,18 @@ function classePosto(posto) {
   return "maquina";
 }
 
+function assumirPrioridade(maquina) {
+
+    const pessoaMaquina = escala[diaAtual][maquina];
+    const pessoaR1 = escala[diaAtual]["R1"];
+    const pessoaR2 = escala[diaAtual]["R2"];
+
+    escala[diaAtual][maquina] = pessoaR1;
+    escala[diaAtual]["R1"] = pessoaR2;
+    escala[diaAtual]["R2"] = pessoaMaquina;
+
+    mostrarDia(diaAtual);
+}
 gerarEscala();
 criarBotoesDias();
 preencherFuncionarios();
