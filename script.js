@@ -169,6 +169,7 @@ function criarBotoesDias() {
 
 function mostrarDia(dia) {
   diaAtual = dia;
+
   const resultado = document.getElementById("resultado");
   const titulo = document.getElementById("titulo-dia");
 
