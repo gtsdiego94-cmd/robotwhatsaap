@@ -341,9 +341,6 @@ function classePosto(posto) {
   return "maquina";
 }
 
-
-
-
 gerarEscala();
 criarBotoesDias();
 preencherFuncionarios();
