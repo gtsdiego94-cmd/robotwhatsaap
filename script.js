@@ -343,8 +343,7 @@ function classePosto(posto) {
 
 
 
-    mostrarDia(diaAtual);
-}
+
 gerarEscala();
 criarBotoesDias();
 preencherFuncionarios();
