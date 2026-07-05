@@ -341,15 +341,7 @@ function classePosto(posto) {
   return "maquina";
 }
 
-function assumirPrioridade(maquina) {
 
-    const pessoaMaquina = escala[diaAtual][maquina];
-    const pessoaR1 = escala[diaAtual]["R1"];
-    const pessoaR2 = escala[diaAtual]["R2"];
-
-    escala[diaAtual][maquina] = pessoaR1;
-    escala[diaAtual]["R1"] = pessoaR2;
-    escala[diaAtual]["R2"] = pessoaMaquina;
 
     mostrarDia(diaAtual);
 }
