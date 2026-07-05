@@ -137,7 +137,7 @@ function registrarContagem(dia) {
     const nome = escala[dia][posto];
 
     if (funcionarios.includes(nome)) {
-      contagem[nome][posto]++;d
+      contagem[nome][posto]++;
       contagem[nome].total++;
       if (fortes.includes(posto)) contagem[nome].fortes++;
     }
