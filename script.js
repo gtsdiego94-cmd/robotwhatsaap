@@ -70,6 +70,13 @@ const escalaManual = {
 let escala = {};
 let contagem = {};
 let diaAtual = 1;
+let statusPresenca = {};
+
+function confirmarChegada(posto) {
+  if (!statusPresenca[diaAtual]) statusPresenca[diaAtual] = {};
+  statusPresenca[diaAtual][posto] = "chegou";
+  mostrarDia(diaAtual);
+}
 
 function iniciarContagem() {
   funcionarios.forEach(nome => {
@@ -191,9 +198,17 @@ function mostrarDia(dia) {
       const fechada = pessoa === "SEM COBERTURA" || pessoa === "Fechada";
 
       html += `
-        <div class="posto-card ${classePosto(posto)} ${fechada ? "fechada" : ""}">
+        <div class="posto-card ${classePosto(posto)} ${fechada ? "fechada" : ""} ${statusPresenca[diaAtual]?.[posto] === "chegou" ? "confirmado" : ""}">
           <div class="posto-nome">${posto}</div>
           <div class="posto-pessoa">${fechada ? "FECHADA / SEM COBERTURA" : pessoa}</div>
+
+${
+  ["G6", "G8", "G5", "G2", "G1"].includes(posto) && !fechada
+    ? `<button class="btn-cheguei" onclick="confirmarChegada('${posto}')">
+        ${statusPresenca[diaAtual]?.[posto] === "chegou" ? "✅ Confirmado" : "Confirmar chegada"}
+      </button>`
+    : ""
+}
         </div>
       `;
     });
